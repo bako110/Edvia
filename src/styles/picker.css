@@ -1,0 +1,39 @@
+/* ============ Sélecteur tactile (Picker) ============ */
+.pick{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-width:0;font:inherit;text-align:left;cursor:pointer;border-radius:12px;
+  transition:border-color .2s,background .2s,transform .15s var(--ease)}
+.pick:active{transform:scale(.98)}
+.pick-v{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+
+/* dans une page : comme un champ de saisie */
+.pick.field{display:flex;min-height:46px;padding:9px 12px;background:var(--bg);color:var(--tx);border:1.5px solid var(--bd)}
+.pick.field:hover,.pick.field:focus-visible{border-color:var(--pri);outline:none}
+.pick.field .icon{color:var(--mut)}
+
+/* dans l'en-tête : verre dépoli sur le dégradé de l'école */
+.pick.head{position:relative;flex:1;height:48px;padding:20px 10px 5px 12px;color:#fff;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(4px)}
+.pick.head:hover{background:rgba(255,255,255,.24)}
+.pick.head:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+.pick-l{position:absolute;top:6px;left:12px;font-size:10px;text-transform:uppercase;letter-spacing:.7px;opacity:.85;font-weight:700}
+
+/* panneau de choix */
+.pov{position:fixed;inset:0;z-index:90;display:flex;align-items:flex-end;justify-content:center;background:rgba(5,14,32,.5);backdrop-filter:blur(3px);animation:fadeo .2s ease both}
+.psheet{width:100%;max-width:520px;max-height:82dvh;overflow:auto;background:var(--card);color:var(--tx);border-radius:26px 26px 0 0;
+  padding:8px 16px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -12px 40px rgba(0,0,0,.28);animation:sheetup .4s var(--ease) both}
+.pgrab{width:42px;height:4px;border-radius:4px;background:var(--bd);margin:6px auto 12px}
+.psheet-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.psheet-h h3{font-size:17px}
+.psheet .search{margin-bottom:12px}
+.popts{display:grid;grid-template-columns:repeat(var(--cols,1),minmax(0,1fr));gap:8px}
+.popt{display:flex;align-items:center;gap:8px;min-height:50px;padding:10px 14px;text-align:left;font:inherit;font-weight:600;color:var(--tx);cursor:pointer;
+  background:var(--bg);border:1.5px solid var(--bd);border-radius:14px;transition:border-color .15s,background .15s,transform .15s var(--ease)}
+.popt:hover{border-color:var(--pri)}.popt:active{transform:scale(.97)}
+.popt-l{flex:1;min-width:0}.popt small{color:var(--mut);font-weight:400}
+.popt .icon{color:var(--pri)}
+.popt.on{border-color:var(--pri);background:var(--soft);color:var(--pri)}
+@media (min-width:700px){.pov{align-items:center}.psheet{border-radius:26px;box-shadow:0 24px 60px rgba(0,0,0,.4)}}
+@keyframes sheetup{from{transform:translateY(60px);opacity:0}}
+
+/* dans la barre web : champ clair avec libellé flottant */
+.pick.bar{position:relative;min-width:190px;height:48px;padding:20px 10px 5px 12px;background:var(--card);color:var(--tx);border:1.5px solid var(--bd)}
+.pick.bar:hover,.pick.bar:focus-visible{border-color:var(--pri);outline:none}
+.pick.bar .pick-l{color:var(--mut);opacity:1}
+.pick.bar .icon{color:var(--mut)}

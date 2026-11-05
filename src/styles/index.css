@@ -1,0 +1,15 @@
+/* Feuille de style unique : l’ordre compte (jetons -> base -> composants -> pages -> responsive -> impression) */
+@import './tokens.css';
+@import './splash.css';
+@import './splash-extra.css';
+@import './layout.css';
+@import './ui.css';
+@import './picker.css';
+@import './dashboard.css';
+@import './features.css';
+@import './refine.css';
+@import './bulletin.css';
+@import './feedback.css';
+@import './responsive.css';
+@import './desktop.css';
+@import './print.css';

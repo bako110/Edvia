@@ -1,0 +1,39 @@
+// Onglets de la barre de navigation selon le profil
+const HOME = { to: '/', label: 'Accueil', icon: 'home', end: true }
+const CLASSES = { to: '/classes', label: 'Classes', icon: 'school' }
+const ELEVES = { to: '/classes', label: 'Élèves', icon: 'users' }
+const NOTES = { to: '/notes', label: 'Notes', icon: 'edit' }
+const RESULTS = { to: '/results', label: 'Résultats', icon: 'trophy' }
+const BULL = { to: '/bulletins', label: 'Bulletins', icon: 'file' }
+const TEAM = { to: '/team', label: 'Équipe', icon: 'user' }
+
+// hasFull : l'enseignant est professeur principal d'au moins une classe (consultation complète)
+export function tabsFor(role, hasFull) {
+  if (role === 'admin' || role === 'staff') return [HOME, CLASSES, RESULTS, BULL, TEAM]
+  return hasFull ? [HOME, NOTES, ELEVES, RESULTS, BULL] : [HOME, NOTES, ELEVES]
+}
+
+// Sélecteurs affichés dans l'en-tête selon la page : { classes: 'full' | 'any' | null, annual }
+export function selectorsFor(pathname) {
+  if (pathname.includes('/eleves/')) return { classes: null, annual: true }   // fiche élève : seule la période se choisit
+  if (pathname.startsWith('/results') || pathname.startsWith('/bulletins')) return { classes: 'full', annual: true }
+  if (pathname.startsWith('/notes')) return { classes: 'any', annual: false }
+  if (pathname === '/') return { classes: null, annual: false }
+  return null
+}
+
+// Titre et sous-titre de la barre supérieure (interface web)
+export function titleFor(pathname) {
+  if (pathname.includes('/eleves/')) return { title: 'Fiche élève', sub: 'Bulletin, notes et vie scolaire' }
+  if (pathname.startsWith('/classes/')) return { title: 'Classe', sub: 'Matières, enseignants et élèves' }
+  const map = {
+    '/': { title: 'Tableau de bord', sub: 'Vue d’ensemble de l’établissement' },
+    '/classes': { title: 'Classes', sub: 'Classes, matières et élèves' },
+    '/notes': { title: 'Saisie des notes', sub: 'Les moyennes se calculent automatiquement' },
+    '/results': { title: 'Résultats', sub: 'Moyennes, rangs et décisions' },
+    '/bulletins': { title: 'Bulletins', sub: 'Aperçu et impression' },
+    '/team': { title: 'Équipe', sub: 'Comptes des enseignants et du personnel' },
+    '/account': { title: 'Paramètres', sub: 'Mon compte et identité de l’établissement' },
+  }
+  return map[pathname] || { title: 'EDVIA', sub: '' }
+}

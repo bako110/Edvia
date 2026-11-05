@@ -1,0 +1,23 @@
+/* ============ Impression ============
+   Marges à zéro : le navigateur n'ajoute ni date, ni adresse, ni numéro de page.
+   Les marges visibles sont celles de la feuille de bulletin elle-même (12 mm). */
+@page{size:A4 portrait;margin:0}
+
+@media print{
+  html,body{margin:0;background:#fff!important}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+
+  /* tout ce qui n'est pas un bulletin disparaît */
+  .noprint,.splash,.toasts,.pov,.overlay,.side,.topbar,.hdr,.ftr,.pagefoot,.tabs{display:none!important}
+  .app,.app.desk,.dcol{display:block!important;min-height:0}
+  .main,.dmain{max-width:none!important;margin:0!important;padding:0!important}
+  .page>*{animation:none!important}
+
+  /* une feuille = une page */
+  .stage{padding:0;background:none;border-radius:0}
+  .stage-in{display:block;zoom:1!important}
+  .sheet{margin:0;box-shadow:none;height:296mm;page-break-after:always;break-after:page;page-break-inside:avoid;break-inside:avoid}
+  .sheet:last-child{page-break-after:auto;break-after:auto}
+  .sh-obs textarea{display:none}
+  .obs-print{display:block}
+}

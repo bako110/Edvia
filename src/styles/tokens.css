@@ -1,0 +1,44 @@
+/* ============ Thème ============
+   --brand est la couleur de l'établissement (posée par le JS depuis sa configuration).
+   Toutes les teintes de l'interface en sont dérivées : chaque école a donc sa propre identité. */
+:root{
+  --brand:#0b2a5e;
+  --bg:#f3f5fa;--card:#fff;--tx:#0d1b33;--mut:#5a6a85;--bd:#dde4f0;
+  --pri:var(--brand);
+  --pri2:color-mix(in srgb,var(--brand) 80%,#fff);
+  --priD:color-mix(in srgb,var(--brand) 68%,#000);
+  --soft:color-mix(in srgb,var(--brand) 11%,var(--card));
+  --priText:#fff;
+  --gold:#fbb017;--goldText:#3d2a00;--green:#0f8159;
+  --red:#d92d20;--redSoft:#fdecea;
+  --good:#0f8159;--okSoft:#e1f4ec;--midSoft:#fff3d6;--midText:#9a6400;
+  --sh:0 1px 2px rgba(11,42,94,.05),0 6px 20px rgba(11,42,94,.07);
+  --ease:cubic-bezier(.22,1,.36,1);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#091120;--card:#101b31;--tx:#e8eef9;--mut:#93a3bf;--bd:#1f2d49;
+    --pri:color-mix(in srgb,var(--brand) 58%,#fff);--pri2:var(--brand);--priD:color-mix(in srgb,var(--brand) 55%,#000);
+    --soft:color-mix(in srgb,var(--brand) 24%,var(--card));--priText:#06142e;
+    --redSoft:#3a1b18;--good:#34c38b;--okSoft:#0f2f27;--midSoft:#33290d;--midText:#fbc552;
+    --sh:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);color-scheme:dark}
+}
+:root[data-theme="dark"]{
+  --bg:#091120;--card:#101b31;--tx:#e8eef9;--mut:#93a3bf;--bd:#1f2d49;
+  --pri:color-mix(in srgb,var(--brand) 58%,#fff);--pri2:var(--brand);--priD:color-mix(in srgb,var(--brand) 55%,#000);
+  --soft:color-mix(in srgb,var(--brand) 24%,var(--card));--priText:#06142e;
+  --redSoft:#3a1b18;--good:#34c38b;--okSoft:#0f2f27;--midSoft:#33290d;--midText:#fbc552;
+  --sh:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);color-scheme:dark}
+
+*{box-sizing:border-box}
+html,body{margin:0}
+html{-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
+body{background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%;transition:background .3s,color .3s}
+button,select,input,textarea{touch-action:manipulation}
+h1,h2,h3{margin:0}
+h2{font-size:16px;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+h2 .icon{color:var(--pri)}
+.mut{color:var(--mut);font-size:12.5px}.center{text-align:center}
+.icon{flex:none;vertical-align:-4px}
+.app{min-height:100dvh;display:flex;flex-direction:column}
