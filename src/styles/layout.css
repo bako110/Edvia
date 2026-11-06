@@ -1,6 +1,6 @@
 /* ============ Header ============ */
 .hdr{position:sticky;top:0;z-index:30;color:#fff;background:linear-gradient(135deg,var(--priD),var(--brand) 55%,var(--pri2));
-  padding:calc(10px + env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) 12px max(14px,env(safe-area-inset-left));
+  padding:calc(10px + var(--sat)) max(14px,var(--sar)) 12px max(14px,var(--sal));
   border-radius:0 0 22px 22px;box-shadow:0 6px 22px color-mix(in srgb,var(--brand) 30%,transparent)}
 .hdr::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;border-radius:0 0 22px 22px;background:linear-gradient(90deg,var(--green) 0 58%,var(--gold) 58%);opacity:.9}
 .hdr-top{display:flex;align-items:center;gap:12px;max-width:1100px;margin:0 auto}
@@ -19,14 +19,14 @@
 .hdr-sel select:focus{outline:2px solid var(--gold);outline-offset:1px}
 
 /* ============ Contenu ============ */
-.main{flex:1;width:100%;max-width:1100px;margin:0 auto;padding:16px max(12px,env(safe-area-inset-left)) calc(104px + env(safe-area-inset-bottom))}
+.main{flex:1;width:100%;max-width:1100px;margin:0 auto;padding:16px max(12px,var(--sal)) calc(104px + var(--sab))}
 .page>*{animation:rise .5s var(--ease) both}
 .page>*:nth-child(2){animation-delay:.05s}.page>*:nth-child(3){animation-delay:.1s}.page>*:nth-child(4){animation-delay:.15s}.page>*:nth-child(5){animation-delay:.2s}.page>*:nth-child(n+6){animation-delay:.25s}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .pagefoot{margin:18px 0 0;text-align:center;font-size:11.5px;color:var(--mut)}
 
 /* ============ Footer / navigation ============ */
-.ftr{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;justify-content:center;padding:0 12px calc(10px + env(safe-area-inset-bottom));pointer-events:none}
+.ftr{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;justify-content:center;padding:0 12px calc(10px + var(--sab));pointer-events:none}
 .tabs{pointer-events:auto;position:relative;display:grid;grid-template-columns:repeat(var(--n),1fr);width:100%;max-width:560px;padding:6px;border-radius:24px;
   background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--bd);box-shadow:0 10px 34px rgba(8,40,22,.2)}
 .tabs .ind{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 12px)/var(--n));border-radius:18px;background:var(--soft);
@@ -37,3 +37,8 @@
 .tabs button:active .icon{transform:scale(.85)}
 @media (min-width:700px){.tabs button{flex-direction:row;justify-content:center;gap:8px;font-size:13.5px}}
 
+
+/* ============ Application native (Android) ============ */
+html.native{overscroll-behavior:none;-webkit-tap-highlight-color:transparent}
+html.native body{-webkit-user-select:none;user-select:none}
+html.native input,html.native textarea{-webkit-user-select:text;user-select:text}

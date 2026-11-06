@@ -64,7 +64,9 @@ export default function NotesPage() {
   // en quittant la page, on envoie immédiatement ce qui est en attente
   useEffect(() => () => { for (const [key, p] of pending.current) { clearTimeout(p.timer); notesApi.set(...p.args).catch(() => {}) }; pending.current.clear() }, [])
 
+  const locked = !!classe?.locked?.[trim]
   const onChange = (e, i, k, value) => {
+    if (locked) return
     patch(c => withNote(c, e.id, j, trim, k, value))
     if (!validNote(value)) return                 // une valeur invalide n’est jamais envoyée
     schedule(`${e.id}|${matiere.id}|${trim}|${k}`, [e.id, matiere.id, trim, k, value])
@@ -104,6 +106,7 @@ export default function NotesPage() {
               <b>Moyenne de la classe : {f(stats.avg)}</b></div>
             <Bar pct={stats.total ? stats.filled / stats.total * 100 : 0} />
           </div>
+          {locked && <div className="alert warn" role="status"><Icon name="lock" size={18} />Ce trimestre est verrouillé (conseil de classe terminé) : les notes ne peuvent plus être modifiées. Seul l’administrateur peut le déverrouiller.</div>}
           <div className={'savebar ' + (failed.size ? 'err' : saving ? 'busy' : 'ok')} role="status">
             {failed.size ? <><Icon name="alert" size={16} /> {failed.size} note(s) non enregistrée(s) — vérifiez la connexion</>
               : saving ? <><span className="spin sm" /> Enregistrement…</>
@@ -134,7 +137,7 @@ export default function NotesPage() {
                       return (
                         <label key={k} className="ncell"><span>{LABELS[k]}</span>
                           <input type="text" inputMode="decimal" placeholder="–" value={a[k]} data-r={i} data-k={k}
-                            className={bad ? 'bad' : ''} aria-label={`${LABELS[k]} — ${e.n}`}
+                            className={bad ? 'bad' : ''} readOnly={locked} aria-label={`${LABELS[k]} — ${e.n}`}
                             onFocus={ev => ev.target.select()} onKeyDown={ev => onKey(ev, i, k)}
                             onChange={ev => onChange(e, i, k, ev.target.value)} />
                         </label>

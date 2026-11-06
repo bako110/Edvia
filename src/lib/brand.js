@@ -7,7 +7,7 @@ export const PALETTES = [
   { n: 'Turquoise', c: '#0f766e' },
   { n: 'Bordeaux', c: '#9f1239' },
   { n: 'Violet', c: '#6d28d9' },
-  { n: 'Orange brûlé', c: '#c2410c' },
+  { n: 'Indigo', c: '#4338ca' },
   { n: 'Ardoise', c: '#334155' },
 ]
 
@@ -24,3 +24,14 @@ export function safeBrand(hex) {
   for (let i = 0; i < 30 && lum(rgb) > 0.2; i++) rgb = rgb.map(v => v * 0.92)
   return toHex(rgb)
 }
+
+// Applique la couleur de l'établissement PARTOUT : variables CSS (interface, bulletins, PDF), barre du navigateur
+// (theme-color) et barre d'état Android. Renvoie la couleur réellement utilisée (assombrie si elle est trop claire).
+export function applyBrand(hex) {
+  const b = safeBrand(hex)
+  document.documentElement.style.setProperty('--brand', b)
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', b)
+  import('../native').then(n => n.setNativeBrand(b)).catch(() => {})
+  return b
+}
+export const isPalette = hex => PALETTES.some(p => p.c === String(hex || '').toLowerCase())

@@ -18,7 +18,7 @@
 /* panneau de choix */
 .pov{position:fixed;inset:0;z-index:90;display:flex;align-items:flex-end;justify-content:center;background:rgba(5,14,32,.5);backdrop-filter:blur(3px);animation:fadeo .2s ease both}
 .psheet{width:100%;max-width:520px;max-height:82dvh;overflow:auto;background:var(--card);color:var(--tx);border-radius:26px 26px 0 0;
-  padding:8px 16px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -12px 40px rgba(0,0,0,.28);animation:sheetup .4s var(--ease) both}
+  padding:8px 16px calc(18px + var(--sab));box-shadow:0 -12px 40px rgba(0,0,0,.28);animation:sheetup .4s var(--ease) both}
 .pgrab{width:42px;height:4px;border-radius:4px;background:var(--bd);margin:6px auto 12px}
 .psheet-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.psheet-h h3{font-size:17px}
 .psheet .search{margin-bottom:12px}

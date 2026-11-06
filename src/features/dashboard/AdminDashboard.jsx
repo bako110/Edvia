@@ -57,6 +57,7 @@ export default function AdminDashboard() {
   const late = lateByTeacher(rows)
   const orphan = rows.filter(r => !r.teacherId)
   const nbEleves = classes.reduce((s, c) => s + c.nbEleves, 0)
+  const orphanByClass = [...orphan.reduce((m, r) => m.set(r.classId, { id: r.classId, name: r.className, items: [...(m.get(r.classId)?.items || []), r] }), new Map()).values()]
   const teachers = new Set(rows.filter(r => r.teacherId).map(r => r.teacherId)).size
 
   const steps = [
@@ -111,10 +112,21 @@ export default function AdminDashboard() {
             </div>
           ))}
           {orphan.length > 0 && (
-            <div className="late warn">
-              <div className="late-h"><Icon name="alert" size={18} /><b>Matières sans enseignant</b><span className="tag gold">{orphan.length}</span></div>
-              <div className="mut">{orphan.map(r => `${r.matiereName} (${r.className})`).join(' · ')}</div>
-              {isAdmin && <Link to="/classes" className="btn sm" style={{ marginTop: 8 }}>Affecter un enseignant <Icon name="arrow" size={14} /></Link>}
+            <div className="orph">
+              <header className="mnote-h">
+                <span className="mnote-ic"><Icon name="user" size={20} /></span>
+                <div><h3>Matières sans enseignant</h3><div className="mut">{orphanByClass.length} classe{orphanByClass.length > 1 ? 's' : ''} concernée{orphanByClass.length > 1 ? 's' : ''}</div></div>
+                <span className="count">{orphan.length}</span>
+              </header>
+              <div className="orph-list">
+                {orphanByClass.map(c => (
+                  <div className="orph-row" key={c.name}>
+                    <b>{c.name}</b>
+                    <div className="orph-chips">{c.items.map(r => <span className="orph-chip" key={r.matiereId}>{r.matiereName}</span>)}</div>
+                    {isAdmin && <Link to={`/classes/${c.id}`} className="btn sm" aria-label={`Affecter les enseignants de ${c.name}`}>Affecter <Icon name="arrow" size={14} /></Link>}
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </section>

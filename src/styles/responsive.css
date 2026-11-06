@@ -3,7 +3,7 @@
 
 @media (max-width:699px){
   input,textarea,select{font-size:16px}
-  .main{padding-left:max(10px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right))}
+  .main{padding-left:max(10px,var(--sal));padding-right:max(10px,var(--sar))}
   .card{padding:16px}
   .row{flex-wrap:wrap}.mrow{flex-wrap:nowrap}
   .act .btn{flex:1}

@@ -38,5 +38,5 @@
 .podium li{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;background:var(--bg);animation:rise .5s var(--ease) calc(var(--k)*90ms + .2s) both}
 .pn{flex:1;font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .medal{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;flex:none;color:#3a2e00}
-.m1{background:linear-gradient(135deg,#ffe36b,#e2a900)}.m2{background:linear-gradient(135deg,#f1f3f5,#aeb6bf)}.m3{background:linear-gradient(135deg,#f0b77f,#b9722f)}
+.m1{background:linear-gradient(135deg,#b3a9ff,#5b4bd6)}.m2{background:linear-gradient(135deg,#f1f3f5,#aeb6bf)}.m3{background:linear-gradient(135deg,#8fe0d8,#1f8f86)}
 

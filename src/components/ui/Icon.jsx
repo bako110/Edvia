@@ -43,6 +43,13 @@ const P = {
   'chev-left': <path d="M15 18l-6-6 6-6" />,
   'chev-right': <path d="M9 18l6-6-6-6" />,
   arrow: <path d="M5 12h14M13 6l6 6-6 6" />,
+  wallet: <><path d="M3 7a2 2 0 0 1 2-2h13v4" /><path d="M3 7v11a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1V10a1 1 0 0 0-1-1H5a2 2 0 0 1-2-2z" /><circle cx="16.5" cy="14.5" r="1.2" /></>,
+  calendar: <><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 10h18M8 3v4M16 3v4" /></>,
+  chat: <path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z" />,
+  spark: <><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" /><path d="M19 15l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z" /></>,
+  phone: <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" />,
+  mail: <><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></>,
+  send: <path d="M22 2L11 13M22 2l-7 20-4-9-9-4z" />,
   book: <><path d="M4 4h6a3 3 0 0 1 3 3v14a2 2 0 0 0-2-2H4z" /><path d="M20 4h-6a3 3 0 0 0-3 3" /><path d="M20 4v15h-7" /></>,
 }
 

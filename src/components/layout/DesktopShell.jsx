@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import Topbar from './Topbar'
+import { ArchiveBanner } from './YearSwitch'
 import { useAuth } from '../../context/AuthContext'
 import { useClasses } from '../../context/ClassesContext'
 import { tabsFor } from '../../config/navigation'
@@ -25,6 +26,7 @@ export default function DesktopShell() {
       <div className="dcol">
         <Topbar menu={menu} onToggle={toggle} />
         <main className="dmain page" key={pathname}>
+          <ArchiveBanner />
           <Outlet />
         </main>
       </div>

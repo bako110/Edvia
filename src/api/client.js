@@ -99,7 +99,25 @@ export async function request(method, path, body, { auth = true } = {}) {
   return data
 }
 
+// Octets bruts (devoirs chiffrés) : envoi et réception sans JSON
+async function binary(method, path, body) {
+  await apiReady()
+  const token = getToken()
+  let res
+  try {
+    res = await fetch(base + path, { method, headers: { 'Content-Type': 'application/octet-stream', ...(token ? { Authorization: `Bearer ${token}` } : {}) }, body })
+  } catch { throw new ApiError(0, 'Connexion impossible au serveur') }
+  if (!res.ok) {
+    if (res.status === 401 && token) listeners.forEach(f => f())
+    const data = await res.json().catch(() => null)
+    throw new ApiError(res.status, data?.error || 'Une erreur est survenue')
+  }
+  return res
+}
+
 export const http = {
+  putRaw: async (p, buffer) => (await binary('PUT', p, buffer)).json(),
+  getBuffer: async p => (await binary('GET', p)).arrayBuffer(),
   get: p => request('GET', p),
   post: (p, b) => request('POST', p, b ?? {}),
   put: (p, b) => request('PUT', p, b ?? {}),

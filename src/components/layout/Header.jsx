@@ -3,6 +3,7 @@ import Icon from '../ui/Icon'
 import Picker from '../ui/Picker'
 import SchoolMark from '../ui/SchoolMark'
 import { useAuth } from '../../context/AuthContext'
+import YearSwitch from './YearSwitch'
 import { useSelectors } from '../../hooks/useSelectors'
 
 export const ROLE = { admin: 'Administrateur', teacher: 'Enseignant', staff: 'Personnel' }
@@ -19,7 +20,7 @@ export default function Header() {
         <div className="hdr-t">
           <div className="hdr-k">EDVIA</div>
           <h1>{school.name}</h1>
-          <div className="hdr-sub">Année {school.annee} · {ROLE[user.role]}</div>
+          <div className="hdr-sub"><YearSwitch inline /> · {ROLE[user.role]}</div>
         </div>
         <Link to="/account" className="hdr-avatar" aria-label="Mon compte">{initials(user.name) || <Icon name="user" size={20} />}</Link>
       </div>

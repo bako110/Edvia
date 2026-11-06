@@ -5,6 +5,7 @@ export const classesApi = {
   create: (name, defaults = true) => http.post('/classes', { name, defaults }),
   update: (id, data) => http.put(`/classes/${id}`, data),
   remove: id => http.del(`/classes/${id}`),
+  setLock: (id, tr, locked) => http.put(`/classes/${id}/lock`, { tr, locked }),
   full: id => http.get(`/classes/${id}/full`),
   addMatiere: (id, data) => http.post(`/classes/${id}/matieres`, data),
   updateMatiere: (id, mid, data) => http.put(`/classes/${id}/matieres/${mid}`, data),

@@ -13,6 +13,8 @@ import { useClasses } from '../../context/ClassesContext'
 import { useConfirm } from '../../context/Feedback'
 import { useClasse } from '../../hooks/useClasse'
 import { useRun } from '../../hooks/useRun'
+import { usePdfStage } from '../../hooks/usePdfStage'
+import { slug } from '../../lib/files'
 import { elevesApi, incidentsApi } from '../../api'
 import { PERIODS, ANNUAL, TR, calc, f, rk, tone, getN, getPen, moyMat, moyMatAnnual, missingFor, vieStats } from '../../lib/calc'
 import { INCIDENT_ICON, INCIDENT_LABEL, describe, shortDate, fmtHours } from '../../lib/vie'
@@ -22,16 +24,20 @@ function BulletinTab({ classe, o, period, r, patch }) {
   const { school } = useAuth()
   const obsProps = useObservations(classe, patch)
   const miss = missingFor(o.e, classe, period)
+  const pdf = usePdfStage()
   return <>
     <MissingBanner classe={classe} period={period} />
     <section className="card noprint">
       <div className="act" style={{ marginTop: 0 }}>
-        <button className="btn p" onClick={() => window.print()}><Icon name="print" size={18} /> Imprimer ce bulletin</button>
-        <span className="mut">Une feuille A4. Pour un fichier, choisissez « Enregistrer au format PDF ».</span>
+        <button className="btn p" disabled={pdf.busy} onClick={() => pdf.start({ name: `Bulletin-${slug(o.e.n)}-${slug(PERIODS[period])}.pdf`, selector: '.sheet' })}>
+          <Icon name="download" size={18} /> {pdf.busy ? 'Création du PDF…' : 'Télécharger en PDF'}
+        </button>
+        <button className="btn" onClick={() => window.print()}><Icon name="print" size={18} /> Imprimer</button>
       </div>
       {miss.length > 0 && <div className="alert warn"><Icon name="alert" size={18} /><span><b>Bulletin provisoire</b> : notes manquantes en {miss.map(m => m.n).join(', ')}.</span></div>}
     </section>
     <Stage><Sheet period={period} school={school} classe={classe} r={r} o={o} index={1} total={1} obsProps={obsProps} /></Stage>
+    {pdf.busy && <div className="print-batch stage" aria-hidden="true" ref={pdf.stageRef}><Sheet period={period} school={school} classe={classe} r={r} o={o} index={1} total={1} obsProps={obsProps} /></div>}
   </>
 }
 

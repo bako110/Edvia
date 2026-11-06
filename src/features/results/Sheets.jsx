@@ -69,6 +69,12 @@ function Frame({ school, classe, title, subtitle, o, r, index, total, children, 
         <div><span>Le proviseur</span><b>{school.proviseur}</b></div>
       </div>
 
+      {o.e.seals?.[obsKey] && (
+        <div className="sh-seal">
+          <span><b>Code d’authenticité</b> {o.e.seals[obsKey]}</span><span>Réf. {o.e.ref}</span>
+          <span>Vérifier : {location.origin}{location.pathname}#/verifier</span>
+        </div>
+      )}
       <footer className="sh-foot"><span>Édité le {today()}</span><span>{school.name}</span><span>Bulletin {index} / {total}</span></footer>
     </article>
   )

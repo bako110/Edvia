@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Icon from '../../components/ui/Icon'
 import SchoolMark from '../../components/ui/SchoolMark'
 import { Field } from '../../components/ui/Field'
 import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/Feedback'
 import { schoolApi } from '../../api'
-import { PALETTES, safeBrand } from '../../lib/brand'
+import { DEFAULT_BRAND, PALETTES, applyBrand, isPalette, safeBrand } from '../../lib/brand'
 
 // Redimensionne le logo (200 px max) pour rester léger
 function readLogo(file) {
@@ -35,7 +35,13 @@ export default function SchoolIdentity() {
   const [d, setD] = useState({ ...school })
   const [busy, setBusy] = useState(false)
   const set = k => e => setD(x => ({ ...x, [k]: e.target.value }))
-  const dirty = ['name', 'ministere', 'devise', 'annee', 'proviseur', 'slogan', 'brand', 'logo'].some(k => d[k] !== school[k])
+  // Aperçu en direct sur TOUTE l'application pendant le choix ; la couleur enregistrée est rétablie si on annule ou si on quitte la page
+  useEffect(() => {
+    applyBrand(d.brand)
+    return () => { applyBrand(school.brand) }
+  }, [d.brand, school.brand])
+  const custom = !isPalette(d.brand)
+  const dirty = ['name', 'ministere', 'devise', 'proviseur', 'slogan', 'brand', 'logo'].some(k => d[k] !== school[k])
 
   const pickLogo = async e => {
     const file = e.target.files[0]; e.target.value = ''
@@ -46,8 +52,8 @@ export default function SchoolIdentity() {
   const save = async () => {
     setBusy(true)
     try {
-      const { name, ministere, devise, annee, proviseur, slogan, brand, logo } = d
-      setSchool(await schoolApi.update({ name, ministere, devise, annee, proviseur, slogan, brand, logo }))
+      const { name, ministere, devise, proviseur, slogan, brand, logo } = d
+      setSchool(await schoolApi.update({ name, ministere, devise, proviseur, slogan, brand, logo }))
       toast('Identité de l’établissement enregistrée')
     } catch (err) { toast(err.message, 'err') }
     setBusy(false)
@@ -56,7 +62,7 @@ export default function SchoolIdentity() {
   return (
     <section className="card">
       <h2><Icon name="school" /> Identité de l’établissement</h2>
-      <p className="mut">Ces informations et ces couleurs s’appliquent à toute l’application, à l’écran de démarrage et aux bulletins de votre établissement.</p>
+      <p className="mut">Ces informations et ces couleurs s’appliquent à toute l’application (y compris la barre d’état du téléphone), à l’écran de démarrage, aux emplois du temps et aux bulletins PDF de votre établissement. Le choix est visible tout de suite ; pensez à enregistrer.</p>
 
       {/* aperçu en direct : les variables de couleur sont recalculées localement */}
       <div className="preview" style={{ '--brand': safeBrand(d.brand) }}>
@@ -73,7 +79,11 @@ export default function SchoolIdentity() {
             {d.brand.toLowerCase() === p.c && <Icon name="check" size={16} />}
           </button>
         ))}
-        <label className="sw custom" title="Couleur personnalisée"><input type="color" value={safeBrand(d.brand)} onChange={e => setD(x => ({ ...x, brand: e.target.value }))} /><Icon name="plus" size={16} /></label>
+        <label className={'sw custom' + (custom ? ' picked' : '')} style={custom ? { '--c': safeBrand(d.brand) } : undefined} title="Couleur personnalisée"><input type="color" value={safeBrand(d.brand)} onChange={e => setD(x => ({ ...x, brand: e.target.value.toLowerCase() }))} /><Icon name={custom ? 'check' : 'plus'} size={16} /></label>
+      </div>
+      <div className="act" style={{ marginTop: 6 }}>
+        <span className="mut">Couleur actuelle : <b>{safeBrand(d.brand)}</b>{custom ? ' (personnalisée)' : ` (${PALETTES.find(p => p.c === d.brand.toLowerCase())?.n})`}</span>
+        {d.brand.toLowerCase() !== DEFAULT_BRAND && <button type="button" className="btn sm" onClick={() => setD(x => ({ ...x, brand: DEFAULT_BRAND }))}>Revenir au bleu EDVIA</button>}
       </div>
       <p className="mut">Les couleurs trop claires sont automatiquement assombries pour que les textes restent lisibles.</p>
 
@@ -88,7 +98,7 @@ export default function SchoolIdentity() {
       <Field label="Nom de l’établissement" value={d.name} onChange={set('name')} maxLength={120} />
       <Field label="Slogan (écran de démarrage)" value={d.slogan} onChange={set('slogan')} maxLength={120} placeholder="Discipline · Travail · Réussite" />
       <div className="row">
-        <Field label="Année scolaire" value={d.annee} onChange={set('annee')} maxLength={20} />
+        <div className="field"><label>Année scolaire</label><div className="yr-static">{school.annee} <span className="mut">· à changer depuis le menu</span></div></div>
         <Field label="Nom du proviseur / directeur" value={d.proviseur} onChange={set('proviseur')} maxLength={80} />
       </div>
       <Field label="Ministère (en-tête du bulletin)" value={d.ministere} onChange={set('ministere')} maxLength={160} />

@@ -30,6 +30,7 @@ export default function TeacherDashboard() {
         <div className="hero-a">
           <Link to="/notes" className="btn gold"><Icon name="edit" size={18} /> Saisir les notes</Link>
           <Link to="/classes" className="btn ghost"><Icon name="users" size={18} /> Mes élèves</Link>
+          <Link to="/emploi-du-temps" className="btn ghost"><Icon name="calendar" size={18} /> Mes horaires</Link>
         </div>
       </div>
       <Ring pct={pct(done, all)} label="saisi" />

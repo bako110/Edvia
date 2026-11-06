@@ -15,9 +15,13 @@ export function toClasse(full) {
   const matieres = full.matieres.map(m => ({ id: m.id, n: m.name, c: m.coef, teacherId: m.teacherId, teacherName: m.teacherName }))
   const eleves = full.eleves.map(e => ({
     id: e.id, n: e.name, matricule: e.matricule, obs: e.obs || {}, inc: e.incidents || [], pen: penalties(e.incidents, matieres),
+    // dossier d'inscription et parents (fournis à l'administration seulement)
+    ref: e.ref || '',         // référence publique courte imprimée sur le bulletin
+    seals: e.seals || null,   // sceaux d'authenticité des bulletins (calculés par le serveur)
+    status: e.status || 'enrolled', parentName: e.parentName || '', parentPhone: e.parentPhone || '', parentEmail: e.parentEmail || '', remise: e.remise || 0,
     notes: Object.fromEntries(Object.entries(e.notes).map(([tr, byM]) => [tr, matieres.map(m => byM[m.id] || ['', '', ''])])),
   }))
-  return { id: full.classe.id, name: full.classe.name, access: full.classe.access, principalId: full.classe.principalId, principalName: full.classe.principalName, matieres, eleves }
+  return { id: full.classe.id, name: full.classe.name, access: full.classe.access, principalId: full.classe.principalId, principalName: full.classe.principalName, locked: full.classe.locked || [false, false, false], matieres, eleves }
 }
 
 // Identifiant de connexion proposé à partir d'un nom : « Awa Ouédraogo » -> « awa.ouedraogo »
@@ -28,6 +32,10 @@ export function suggestLogin(name) {
 // Mot de passe provisoire lisible (sans caractères ambigus)
 export function tempPassword(len = 10) {
   const chars = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789'
-  const a = new Uint32Array(len); crypto.getRandomValues(a)
-  return Array.from(a, x => chars[x % chars.length]).join('')
+  let pwd
+  do {
+    const a = new Uint32Array(len); crypto.getRandomValues(a)
+    pwd = Array.from(a, x => chars[x % chars.length]).join('')
+  } while (!/[A-Za-z]/.test(pwd) || !/\d/.test(pwd))   // exigence du serveur : une lettre et un chiffre
+  return pwd
 }

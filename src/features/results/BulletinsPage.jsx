@@ -7,6 +7,8 @@ import { Sheet } from './Sheets'
 import { useFullClass } from './useFullClass'
 import { useObservations } from './useObservations'
 import { useAuth } from '../../context/AuthContext'
+import { usePdfStage } from '../../hooks/usePdfStage'
+import { slug } from '../../lib/files'
 import { usePaged } from '../../hooks/usePaged'
 import { smartFilter } from '../../lib/search'
 import { Hl, SearchBox, ListNav } from '../../components/ui/ListTools'
@@ -23,6 +25,7 @@ function BulletinList({ classe, period, patch }) {
   const [q, setQ] = useState('')
   const [sort, setSort] = useState('rang')
   const [printing, setPrinting] = useState(false)
+  const pdf = usePdfStage()
 
   const sorted = [...r.list].sort((a, b) => sort === 'nom' ? a.e.n.localeCompare(b.e.n, 'fr') : (a.rang || 9999) - (b.rang || 9999) || a.e.n.localeCompare(b.e.n, 'fr'))
   const found = smartFilter(sorted, q, o => `${o.e.n} ${o.e.matricule || ''}`)
@@ -48,10 +51,13 @@ function BulletinList({ classe, period, patch }) {
       <h2><Icon name="file" /> Bulletins · {classe.name} · {PERIODS[period]}</h2>
       <p className="mut">Choisissez un élève pour voir son bulletin, ses notes et sa vie scolaire. {incomplete > 0 && <b>{incomplete} bulletin{incomplete > 1 ? 's' : ''} provisoire{incomplete > 1 ? 's' : ''} (notes manquantes).</b>}</p>
       <div className="act">
-        <button className="btn p" disabled={printing} onClick={() => setPrinting(true)}>
-          <Icon name="print" size={18} /> {printing ? 'Préparation…' : `Imprimer toute la classe (${r.list.length})`}
+        <button className="btn p" disabled={pdf.busy || printing} onClick={() => pdf.start({ name: `Bulletins-${slug(classe.name)}-${slug(PERIODS[period])}.pdf`, selector: '.sheet' })}>
+          <Icon name="download" size={18} /> {pdf.busy ? 'Création du PDF…' : `Télécharger en PDF (${r.list.length} bulletin${r.list.length > 1 ? 's' : ''})`}
         </button>
-        <span className="mut">Une feuille A4 par élève. Pour un fichier, choisissez « Enregistrer au format PDF ».</span>
+        <button className="btn" disabled={printing || pdf.busy} onClick={() => setPrinting(true)}>
+          <Icon name="print" size={18} /> {printing ? 'Préparation…' : 'Imprimer'}
+        </button>
+        <span className="mut">Un seul fichier PDF, une page A4 par élève.</span>
       </div>
     </section>
 
@@ -81,8 +87,8 @@ function BulletinList({ classe, period, patch }) {
       <ListNav nav={list} />
     </section>
 
-    {printing && (
-      <div className="print-batch stage" aria-hidden="true">
+    {(printing || pdf.busy) && (
+      <div className="print-batch stage" aria-hidden="true" ref={pdf.stageRef}>
         <div className="stage-in">
           {r.list.map((o, i) => <Sheet key={o.e.id} period={period} school={school} classe={classe} r={r} o={o} index={i + 1} total={r.list.length} obsProps={obsProps} />)}
         </div>

@@ -3,6 +3,7 @@ import Icon from '../ui/Icon'
 import SchoolMark from '../ui/SchoolMark'
 import { useAuth } from '../../context/AuthContext'
 import { useConfirm } from '../../context/Feedback'
+import YearSwitch from './YearSwitch'
 import { ROLE, initials } from './Header'
 
 // Menu latéral de l’interface web : ouvert, réduit (icônes seules) ou fermé
@@ -24,7 +25,7 @@ export default function Sidebar({ tabs, mode, onMode }) {
         <SchoolMark logo={school.logo} size={rail ? 44 : 52} />
         <div className="side-txt">
           <div className="side-name">{school.name}</div>
-          <div className="side-year">Année scolaire {school.annee}</div>
+          <YearSwitch />
         </div>
       </div>
 

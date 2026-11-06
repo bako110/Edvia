@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from 'react-router-dom'
 import Header from './Header'
 import TabBar from './TabBar'
+import { ArchiveBanner } from './YearSwitch'
 import DesktopShell from './DesktopShell'
 import { useAuth } from '../../context/AuthContext'
 import { useClasses } from '../../context/ClassesContext'
@@ -18,6 +19,7 @@ export default function AppShell() {
     <div className="app">
       <Header />
       <main className="main page" key={pathname}>
+        <ArchiveBanner />
         <Outlet />
         <p className="pagefoot noprint">EDVIA · Gestion scolaire au Burkina Faso</p>
       </main>

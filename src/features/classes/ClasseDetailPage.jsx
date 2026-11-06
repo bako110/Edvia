@@ -10,7 +10,7 @@ import { useConfirm, useToast } from '../../context/Feedback'
 import { useClasse } from '../../hooks/useClasse'
 import { useRun } from '../../hooks/useRun'
 import { classesApi, elevesApi, usersApi } from '../../api'
-import { num } from '../../lib/calc'
+import { num, TR } from '../../lib/calc'
 import { usePaged } from '../../hooks/usePaged'
 import { smartFilter } from '../../lib/search'
 import { Hl, SearchBox, ListNav } from '../../components/ui/ListTools'
@@ -56,6 +56,30 @@ function Matieres({ classe, teachers, editable, onChange }) {
           <button className="btn" disabled={!draft.name.trim()} onClick={add}><Icon name="plus" size={16} /> Ajouter</button>
         </div>
       )}
+    </section>
+  )
+}
+
+/* ---------- verrouillage des trimestres (administrateur) ---------- */
+function Locks({ classe, isAdmin, onChange }) {
+  const run = useRun(), confirm = useConfirm()
+  const toggle = async tr => {
+    const lock = !classe.locked[tr]
+    const ok = await confirm({ danger: !lock, ok: lock ? 'Verrouiller' : 'Déverrouiller', title: `${lock ? 'Verrouiller' : 'Déverrouiller'} le ${TR[tr]} ?`,
+      text: lock ? 'Plus aucune note ni pénalité ne pourra être modifiée dans cette classe pour ce trimestre, par personne.' : 'Les notes de ce trimestre redeviennent modifiables. Cette action est enregistrée dans le journal d’audit.' })
+    if (ok && await run(() => classesApi.setLock(classe.id, tr, lock), lock ? 'Trimestre verrouillé' : 'Trimestre déverrouillé')) onChange()
+  }
+  return (
+    <section className="card">
+      <h2><Icon name="lock" /> Verrouillage des notes</h2>
+      <p className="mut">Une fois le conseil de classe terminé, verrouillez le trimestre : les notes et les pénalités ne peuvent plus être modifiées, ce qui protège les moyennes et les bulletins.</p>
+      <div className="locks">
+        {TR.map((t, i) => (
+          <button key={t} className={'lockbtn' + (classe.locked[i] ? ' on' : '')} onClick={() => toggle(i)} aria-pressed={classe.locked[i]} disabled={classe.locked[i] && !isAdmin} title={classe.locked[i] && !isAdmin ? 'Seul l’administrateur peut déverrouiller' : undefined}>
+            <Icon name={classe.locked[i] ? 'lock' : 'key'} size={20} /><b>{t}</b><span>{classe.locked[i] ? (isAdmin ? 'Verrouillé' : 'Verrouillé · admin seul') : 'Ouvert'}</span>
+          </button>
+        ))}
+      </div>
     </section>
   )
 }
@@ -132,6 +156,7 @@ export default function ClasseDetailPage() {
           </> : <p className="mut">{classe.eleves.length} élève(s) · accès {classe.access === 'full' ? 'complet' : 'à vos matières'}</p>}
         </section>
 
+        {canManage && <Locks classe={classe} isAdmin={isAdmin} onChange={refresh} />}
         {canManage && <ImportEleves classe={classe} onDone={refresh} />}
         <div className="cols-2">
           <Matieres classe={classe} teachers={teachers} editable={isAdmin} onChange={refresh} />

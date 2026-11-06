@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Icon from '../../components/ui/Icon'
 import { PasswordField } from '../../components/ui/Field'
-import { authApi } from '../../api'
+import { authApi, setToken } from '../../api'
 import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/Feedback'
 
@@ -19,7 +19,8 @@ export default function ChangePasswordForm({ onDone, submitLabel = 'Changer le m
     if (f.password !== f.confirm) return setError('Les deux mots de passe ne correspondent pas')
     setError(''); setBusy(true)
     try {
-      await authApi.changePassword(f.old, f.password)
+      const r = await authApi.changePassword(f.old, f.password)
+      if (r?.token) setToken(r.token)   // les anciennes sessions sont révoquées : on garde la nôtre
       passwordChanged(); toast('Mot de passe modifié')
       setF({ old: '', password: '', confirm: '' })
       onDone?.()
@@ -30,7 +31,7 @@ export default function ChangePasswordForm({ onDone, submitLabel = 'Changer le m
   return (
     <form onSubmit={submit} className="auth-form">
       <PasswordField label="Mot de passe actuel" value={f.old} onChange={set('old')} autoComplete="current-password" required />
-      <PasswordField label="Nouveau mot de passe" value={f.password} onChange={set('password')} autoComplete="new-password" hint="8 caractères minimum" required />
+      <PasswordField label="Nouveau mot de passe" value={f.password} onChange={set('password')} autoComplete="new-password" hint="8 caractères minimum, avec au moins une lettre et un chiffre" required />
       <PasswordField label="Confirmer le nouveau mot de passe" value={f.confirm} onChange={set('confirm')} autoComplete="new-password" required />
       {error && <div className="alert err" role="alert"><Icon name="alert" size={18} />{error}</div>}
       <button className="btn p block" disabled={busy || !f.old || !f.password}><Icon name="key" size={18} /> {busy ? 'Enregistrement…' : submitLabel}</button>

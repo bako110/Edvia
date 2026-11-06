@@ -118,3 +118,6 @@
 .lv5 .sh-head{padding-bottom:2.5mm}.lv5 .sh-title{margin:2mm 0 2mm;padding:1.4mm 0}.lv5 .sh-id{padding:1.5mm 4mm;margin-bottom:2mm}.lv5 .sh-table{margin-bottom:2mm}
 .lv5 .sh-sum{margin-bottom:1.5mm}.lv5 .sh-stat{min-height:11mm;padding:1mm 3mm}.lv5 .sh-obs{min-height:10mm}.lv5 .sh-sig{margin-top:2mm}.lv5 .sh-sig>div{height:10mm}
 .lv5 .sh-vie{margin-top:1mm;padding:1mm 3mm}.lv5 .sh-vgrid{margin-bottom:0}.lv5 .sh-foot{margin-top:1.5mm}
+
+.sh-seal{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1mm 5mm;margin-top:2.5mm;padding:1.4mm 2.5mm;border:.4pt dashed var(--line);border-radius:1mm;font-size:6.6pt;color:var(--soft)}
+.sh-seal b{color:var(--ink)}.sh-seal span:first-child{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:7.2pt}

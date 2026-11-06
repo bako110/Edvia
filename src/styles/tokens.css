@@ -9,10 +9,13 @@
   --priD:color-mix(in srgb,var(--brand) 68%,#000);
   --soft:color-mix(in srgb,var(--brand) 11%,var(--card));
   --priText:#fff;
-  --gold:#fbb017;--goldText:#3d2a00;--green:#0f8159;
+  --gold:#6d5dfc;--goldText:#fff;--green:#0f8159;
   --red:#d92d20;--redSoft:#fdecea;
-  --good:#0f8159;--okSoft:#e1f4ec;--midSoft:#fff3d6;--midText:#9a6400;
-  --sh:0 1px 2px rgba(11,42,94,.05),0 6px 20px rgba(11,42,94,.07);
+  --good:#0f8159;--okSoft:#e1f4ec;--midSoft:#ecebff;--midText:#4538b8;
+  /* zones à éviter : barre d'état, encoche, barre de navigation (Android 15+ dessine l'application SOUS les barres) */
+  --sat:max(env(safe-area-inset-top,0px),var(--safe-area-inset-top,0px));--sab:max(env(safe-area-inset-bottom,0px),var(--safe-area-inset-bottom,0px));
+  --sal:max(env(safe-area-inset-left,0px),var(--safe-area-inset-left,0px));--sar:max(env(safe-area-inset-right,0px),var(--safe-area-inset-right,0px));
+  --sh:0 1px 2px color-mix(in srgb,var(--brand) 6%,transparent),0 6px 20px color-mix(in srgb,var(--brand) 8%,transparent);
   --ease:cubic-bezier(.22,1,.36,1);
   color-scheme:light;
 }
@@ -21,14 +24,14 @@
     --bg:#091120;--card:#101b31;--tx:#e8eef9;--mut:#93a3bf;--bd:#1f2d49;
     --pri:color-mix(in srgb,var(--brand) 58%,#fff);--pri2:var(--brand);--priD:color-mix(in srgb,var(--brand) 55%,#000);
     --soft:color-mix(in srgb,var(--brand) 24%,var(--card));--priText:#06142e;
-    --redSoft:#3a1b18;--good:#34c38b;--okSoft:#0f2f27;--midSoft:#33290d;--midText:#fbc552;
+    --redSoft:#3a1b18;--good:#34c38b;--okSoft:#0f2f27;--midSoft:#25224d;--midText:#c4beff;
     --sh:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);color-scheme:dark}
 }
 :root[data-theme="dark"]{
   --bg:#091120;--card:#101b31;--tx:#e8eef9;--mut:#93a3bf;--bd:#1f2d49;
   --pri:color-mix(in srgb,var(--brand) 58%,#fff);--pri2:var(--brand);--priD:color-mix(in srgb,var(--brand) 55%,#000);
   --soft:color-mix(in srgb,var(--brand) 24%,var(--card));--priText:#06142e;
-  --redSoft:#3a1b18;--good:#34c38b;--okSoft:#0f2f27;--midSoft:#33290d;--midText:#fbc552;
+  --redSoft:#3a1b18;--good:#34c38b;--okSoft:#0f2f27;--midSoft:#25224d;--midText:#c4beff;
   --sh:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);color-scheme:dark}
 
 *{box-sizing:border-box}

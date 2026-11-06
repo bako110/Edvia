@@ -1,0 +1,174 @@
+/* Gestion de l'établissement : inscriptions, frais, absences, emplois du temps, parents, accompagnement */
+
+/* pôle de gestion */
+.hub{display:grid;gap:12px}
+.hub-card{display:flex;align-items:center;gap:14px;padding:16px;background:var(--card);border:1px solid var(--bd);border-radius:var(--r);box-shadow:var(--sh);color:inherit;text-decoration:none;
+  animation:rise .4s var(--ease) calc(var(--k)*40ms) both;transition:transform .2s var(--ease),border-color .2s}
+.hub-card:hover{transform:translateY(-2px);border-color:var(--pri)}.hub-card:active{transform:scale(.98)}
+.hub-card>div{flex:1;min-width:0}.hub-card b{display:block;font-size:15.5px;margin-bottom:2px}
+.hub-ic{display:grid;place-items:center;flex:none;width:48px;height:48px;border-radius:14px;background:var(--soft);color:var(--pri)}
+.hub-go{color:var(--mut);flex:none}
+@media (min-width:700px){.hub{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1024px){.hub{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.hub-card{padding:20px}}
+
+/* éléments communs */
+.kpis.k3{grid-template-columns:repeat(3,1fr)}
+.kpis.k3 .kpi b{font-size:clamp(15px,4.4vw,24px);overflow-wrap:anywhere}
+.kpis.k3 .kpi span{font-size:11.5px;line-height:1.25}
+.btnrow{width:100%;border:0;background:none;font:inherit;color:inherit;text-align:left;cursor:pointer}
+.cprog.btnrow{display:block;padding:10px;margin:0 -10px;border-radius:12px;width:calc(100% + 20px)}
+.cprog.btnrow:hover,.cprog.btnrow.on{background:var(--soft)}
+h3.sub{margin:16px 0 0;font-size:13px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:var(--mut)}
+.alert.ok{background:var(--okSoft);color:var(--good)}
+.alert .btn.link{padding:0;margin-left:4px;display:inline-flex;min-height:0}
+.act{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.fchips{margin:10px 0}
+.chipbtn.sm{min-height:30px;padding:3px 10px;font-size:12px}
+.clamp{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.vie-list li.sent{opacity:.6}
+
+/* frais */
+.plan-sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.plan-sum>div{background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.plan-sum b{font-size:15px}
+.tr-row{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1.1fr) auto;gap:6px;align-items:center;margin-top:8px}
+.tr-row input{min-width:0}
+@media (max-width:520px){.tr-row{grid-template-columns:1fr 1fr auto}.tr-row input:first-child{grid-column:1/3}.tr-row input[type=date]{grid-column:1/3}.tr-row .btn{grid-row:1;grid-column:3}}
+.finlist{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.finrow{border:1px solid var(--bd);border-radius:14px;padding:6px 12px 10px;background:var(--card)}
+.finrow.open{border-color:var(--pri)}
+.finhead{display:flex;align-items:center;gap:10px;width:100%;min-height:48px;border:0;background:none;font:inherit;color:inherit;text-align:left;cursor:pointer;padding:6px 0}
+.finhead .sname{flex:1;min-width:0}
+.finr{display:flex;flex-direction:column;align-items:flex-end;gap:2px;text-align:right}
+.fin-detail{margin-top:10px;padding-top:6px;border-top:1px dashed var(--bd)}
+.tr-line{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--bd);font-size:13.5px;flex-wrap:wrap}
+.tr-line:last-child{border-bottom:0}
+.payform{margin-top:6px;padding:4px 12px 12px;background:var(--bg);border-radius:12px}
+.vie-h{margin:14px 0 6px;font-size:13px;font-weight:700}
+
+/* emploi du temps */
+.week{display:grid;gap:12px}
+@media (min-width:700px){.week{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}}
+@media (min-width:1280px){.week{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.day h2{display:flex;align-items:center;justify-content:space-between}
+.day-add{margin-left:auto}
+.slot{display:flex;gap:12px;align-items:stretch;width:100%;margin-top:8px;padding:0;border:0;background:none;font:inherit;color:inherit;text-align:left;cursor:pointer}
+.slot:disabled{cursor:default}
+.slot-t{flex:none;width:56px;padding:8px 6px;text-align:center;font-weight:700;font-size:13.5px;line-height:1.3;border-radius:12px;
+  background:hsl(var(--hue) 70% 94%);color:hsl(var(--hue) 55% 28%)}
+.slot-t small{font-weight:500;opacity:.8}
+.slot-b{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:1px;padding:6px 0 6px 12px;border-left:3px solid hsl(var(--hue) 60% 55%)}
+:root[data-theme=dark] .slot-t,.dark .slot-t{background:hsl(var(--hue) 35% 22%);color:hsl(var(--hue) 70% 85%)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .slot-t{background:hsl(var(--hue) 35% 22%);color:hsl(var(--hue) 70% 85%)}}
+
+/* communication */
+.vars{margin-top:8px}
+textarea{width:100%}
+
+/* accompagnement */
+.coach .finhead{min-height:56px}
+.trend{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0}
+.trend>div{background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:8px;text-align:center;display:flex;flex-direction:column}
+.why{margin:4px 0;padding-left:18px;font-size:13.5px;line-height:1.55}
+.why.ok li::marker{color:var(--good)}
+.subj-cols{display:grid;gap:0 18px}
+@media (min-width:700px){.subj-cols{grid-template-columns:1fr 1fr}}
+
+/* année scolaire */
+.yr-static{min-height:44px;display:flex;align-items:center;gap:6px;padding:0 12px;border:1.5px solid var(--bd);border-radius:12px;background:var(--bg);font-weight:600}
+.yr{display:inline-flex;align-items:center;gap:6px;border:0;background:none;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:left}
+.yr:hover{text-decoration:underline}
+.yr-list{display:flex;flex-direction:column;gap:6px;margin:4px 0 8px}
+.yr-opt{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:48px;padding:0 14px;border:1.5px solid var(--bd);border-radius:12px;background:var(--card);font:inherit;font-weight:600;color:var(--tx);cursor:pointer}
+.yr-opt.on{border-color:var(--pri);background:var(--soft);color:var(--pri)}
+.arch{display:flex;align-items:center;gap:10px;padding:10px 14px;margin-bottom:14px;border-radius:12px;background:var(--midSoft);color:var(--midText);font-size:13.5px;font-weight:600}
+
+/* contact des parents */
+.contact{display:inline-flex;gap:6px;flex:none}
+.contact .btn{text-decoration:none}
+.srow .srow-main{display:flex;align-items:center;gap:12px;flex:1;min-width:0;min-height:48px;padding:0;text-align:left}
+
+/* emploi du temps imprimable (PDF) : A4 paysage */
+.tt-print{display:none}
+@page tt{size:A4 landscape;margin:0}
+@media print{
+  .tt-print{display:block;page:tt;box-sizing:border-box;width:297mm;min-height:209mm;padding:12mm;background:#fff;color:#141a24;font-family:inherit}
+  .tt-head{display:flex;align-items:center;gap:14px;padding-bottom:10px;border-bottom:3px solid var(--brand);margin-bottom:12px}
+  .tt-school{font-size:18px;font-weight:700}.tt-sub{font-size:12px;color:#5a6573}
+  .tt-title{margin-left:auto;text-align:right;display:flex;flex-direction:column}.tt-title b{font-size:20px;color:var(--brand)}.tt-title span{font-size:14px;font-weight:600}
+  .tt-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px}
+  .tt-table th,.tt-table td{border:1px solid #cdd3dc;padding:5px 6px;vertical-align:top}
+  .tt-table thead th{background:var(--brand);color:#fff;font-size:13px}
+  .tt-table tbody th{width:22mm;background:#eef1f5;font-size:11.5px;white-space:nowrap}
+  .tt-cell{padding:4px 6px;margin:2px 0;border-left:4px solid hsl(var(--hue) 60% 50%);background:hsl(var(--hue) 70% 95%);border-radius:3px;break-inside:avoid}
+  .tt-cell b{display:block;font-size:12.5px}.tt-cell span{font-size:10.5px;color:#444}
+  .tt-foot{margin-top:10px;font-size:10px;color:#8a93a0;text-align:right}
+}
+
+/* notes manquantes : carte aux couleurs de l'établissement */
+.mnote{padding:0;overflow:hidden;border:1px solid color-mix(in srgb,var(--pri) 25%,var(--bd));border-left:5px solid var(--pri);background:var(--card)}
+.mnote-h{display:flex;align-items:center;gap:12px;padding:16px 18px;background:color-mix(in srgb,var(--pri) 8%,var(--card))}
+.mnote-h h2{margin:0;font-size:16px}.mnote-h>div{flex:1;min-width:0}
+.mnote-ic{display:grid;place-items:center;flex:none;width:40px;height:40px;border-radius:12px;background:var(--pri);color:var(--priText,#fff)}
+.mnote-list{display:grid;gap:10px;padding:14px 18px 4px}
+@media (min-width:700px){.mnote-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1280px){.mnote-list{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.mnote-row{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border:1px solid var(--bd);border-radius:14px;background:var(--bg)}
+.mnote-top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.mnote-who{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--mut)}
+.mnote-who .avatar{width:24px;height:24px;font-size:12px}
+.mnote-foot{display:flex;align-items:center;gap:6px;margin:0;padding:12px 18px 16px;font-size:12.5px;color:var(--mut)}
+
+/* matières sans enseignant */
+.orph{margin-top:14px;border:1px solid color-mix(in srgb,var(--pri) 25%,var(--bd));border-left:5px solid var(--pri);border-radius:var(--r);overflow:hidden;background:var(--card)}
+.orph .mnote-h h3{font-size:16px}
+.orph-list{display:flex;flex-direction:column}
+.orph-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px 14px;padding:12px 18px;border-top:1px solid var(--bd)}
+.orph-chips{display:flex;flex-wrap:wrap;gap:6px}
+.orph-chip{padding:3px 10px;border-radius:999px;background:var(--soft);color:var(--pri);font-size:12.5px;font-weight:600}
+@media (max-width:600px){.orph-row{grid-template-columns:1fr auto}.orph-chips{grid-column:1/3;order:3}}
+
+/* dépôt des devoirs */
+.vault-note{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:12px;background:color-mix(in srgb,var(--pri) 8%,var(--card));border:1px solid color-mix(in srgb,var(--pri) 22%,var(--bd));font-size:13.5px;line-height:1.5;margin:10px 0}
+.vault-note .icon{flex:none;color:var(--pri);margin-top:2px}
+.filebox{display:flex;align-items:center;gap:12px;padding:14px;border:2px dashed var(--bd);border-radius:14px;background:var(--bg);cursor:pointer}
+.filebox:hover{border-color:var(--pri)}.filebox input{display:none}
+.filebox b{display:block}
+.codebox{display:flex;gap:8px}.codebox input{flex:1;font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:.04em}
+
+/* feuille d'emploi du temps : mise en page identique à l'écran (hors écran, pour le PDF) et à l'impression */
+.print-batch.land{width:297mm}
+.print-batch .tt-print{display:block;box-sizing:border-box;width:297mm;min-height:209mm;padding:12mm;background:#fff;color:#141a24}
+.print-batch .tt-head{display:flex;align-items:center;gap:14px;padding-bottom:10px;border-bottom:3px solid var(--brand);margin-bottom:12px}
+.print-batch .tt-school{font-size:18px;font-weight:700}.print-batch .tt-sub{font-size:12px;color:#5a6573}
+.print-batch .tt-title{margin-left:auto;text-align:right;display:flex;flex-direction:column}.print-batch .tt-title b{font-size:20px;color:var(--brand)}.print-batch .tt-title span{font-size:14px;font-weight:600}
+.print-batch .tt-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px}
+.print-batch .tt-table th,.print-batch .tt-table td{border:1px solid #cdd3dc;padding:5px 6px;vertical-align:top;text-align:left;background:none;color:inherit;text-transform:none;letter-spacing:0}
+.print-batch .tt-table thead th{background:var(--brand);color:#fff;font-size:13px;text-align:center}
+.print-batch .tt-table tbody th{width:22mm;background:#eef1f5;font-size:11.5px;white-space:nowrap}
+.print-batch .tt-cell{padding:4px 6px;margin:2px 0;border-left:4px solid hsl(var(--hue) 60% 50%);background:hsl(var(--hue) 70% 95%);border-radius:3px}
+.print-batch .tt-cell b{display:block;font-size:12.5px}.print-batch .tt-cell span{font-size:10.5px;color:#444}
+.print-batch .tt-foot{margin-top:10px;font-size:10px;color:#8a93a0;text-align:right}
+
+/* verrous de trimestre */
+.locks{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.lockbtn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:14px 8px;border:1.5px solid var(--bd);border-radius:14px;background:var(--card);color:var(--tx);font:inherit;cursor:pointer}
+.lockbtn span{font-size:12px;color:var(--mut)}
+.lockbtn.on{border-color:var(--pri);background:var(--pri);color:var(--priText)}.lockbtn.on span{color:inherit;opacity:.85}
+.audit s{opacity:.6}
+
+.slot-ed{align-self:center;flex:none;margin-right:6px;color:var(--pri);opacity:.7}.slot:hover .slot-ed{opacity:1}
+.slot:hover .slot-b{background:var(--soft);border-radius:0 10px 10px 0}
+
+/* couleur personnalisée sélectionnée */
+.sw.custom.picked{background:var(--c);color:#fff;box-shadow:0 0 0 3px var(--card),0 0 0 5px var(--c)}
+
+/* Android : barre d'état, encoche et barre de navigation */
+html.native .auth{padding-top:calc(24px + var(--sat));padding-bottom:calc(40px + var(--sab));padding-left:max(16px,var(--sal));padding-right:max(16px,var(--sar))}
+html.native .dcol{padding-top:var(--sat)}
+html.native .side{padding-top:calc(22px + var(--sat));padding-bottom:calc(18px + var(--sab))}
+html.native .splash{padding:var(--sat) var(--sar) var(--sab) var(--sal)}
+html.native .main,html.native .dmain{padding-bottom:calc(104px + var(--sab))}
+
+/* Android : la zone de la barre d'état est toujours à la couleur de l'établissement (derrière l'en-tête quand il y en a un) */
+html.native body::before{content:"";position:fixed;top:0;left:0;right:0;height:var(--sat);background:var(--brand);z-index:20;pointer-events:none}
